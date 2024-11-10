@@ -1,4 +1,4 @@
-# Guacamole Server and Client
+# Guacamole client and server
 
 ## How to build
 
