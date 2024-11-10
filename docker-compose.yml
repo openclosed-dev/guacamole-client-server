@@ -1,0 +1,26 @@
+services:
+  postgres:
+    image: postgres:17
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${GUACAMOLE_DATABASE}
+    volumes:
+      - ./postgres:/docker-entrypoint-initdb.d
+
+  guacd:
+    build: guacd
+
+  guacamole:
+    image: guacamole/guacamole:latest
+    ports:
+      - '8080:8080'
+    environment:
+      - GUACD_HOSTNAME=guacd
+      - POSTGRESQL_HOSTNAME=postgres
+      - POSTGRES_DATABASE=${GUACAMOLE_DATABASE}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    depends_on:
+      - postgres
+      - guacd
